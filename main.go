@@ -34,7 +34,7 @@ func main() {
 	e.Use(middL.Log)
 	e.Use(_echoMiddleware.CORSWithConfig(_echoMiddleware.CORSConfig{
 		AllowOrigins: strings.Split(originAllowed, ","),
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderContentDisposition},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
 

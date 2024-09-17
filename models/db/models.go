@@ -15,40 +15,40 @@ type SelectIssue struct { // select
 	DisplayName  string
 	Type         string
 	Priority     string
-	CreatedAt    *time.Time
-	UpdatedAt    *time.Time
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 	ParentKey    string
 
 	// Child     []Child `json:"child,omitempty"` // Optional, only present for some issues
 }
 
 type Issue struct { // select
-	JiraIssueKey string     `json:"id"`
-	Summary      string     `json:"summary"`
-	Status       Status     `json:"status"`
-	DisplayName  string     `json:"asignee"`
-	Priority     string     `json:"priority"`
-	CreatedAt    *time.Time `json:"created_at"`
+	JiraIssueKey string    `json:"id"`
+	Summary      string    `json:"summary"`
+	Status       Status    `json:"status"`
+	DisplayName  string    `json:"asignee"`
+	Priority     string    `json:"priority"`
+	CreatedAt    time.Time `json:"created_at"`
 
 	// Child     []Child `json:"child,omitempty"` // Optional, only present for some issues
 }
 
 type Task struct {
-	Id          string     `json:"id"`
-	ProjectId   string     `json:"project_id"`
-	BoardId     string     `json:"board_id"`
-	SprintId    string     `json:"sprint_id"`
-	Summary     string     `json:"summary"`
-	Status      Status     `json:"status"`
-	DisplayName string     `json:"asignee"`
-	Priority    string     `json:"priority"`
-	CreatedAt   *time.Time `json:"created_at"`
-	SubTask     []Issue    `json:"sub_tasks"`
+	Id          string    `json:"id"`
+	ProjectId   string    `json:"project_id"`
+	BoardId     string    `json:"board_id"`
+	SprintId    string    `json:"sprint_id"`
+	Summary     string    `json:"summary"`
+	Status      Status    `json:"status"`
+	DisplayName string    `json:"asignee"`
+	Priority    string    `json:"priority"`
+	CreatedAt   time.Time `json:"created_at"`
+	SubTask     []Issue   `json:"sub_tasks"`
 }
 
 type Status struct {
-	Name      string     `json:"name"`
-	UpdatedAt *time.Time `json:"updated_at"`
+	Name      string    `json:"name"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type Projects struct {
@@ -58,8 +58,8 @@ type Projects struct {
 	Description    string
 	Lead           string
 	TypeProject    string
-	CreatedAt      *time.Time
-	Created        *time.Time
+	CreatedAt      time.Time
+	Created        time.Time
 }
 
 type Users struct {
@@ -68,7 +68,7 @@ type Users struct {
 	DisplayName string
 	Email       string
 	Active      bool
-	Created     *time.Time
+	Created     time.Time
 }
 
 type Issues struct {
@@ -83,10 +83,10 @@ type Issues struct {
 	AssigneeID   string
 	ReporterID   string
 	Priority     string
-	CreatedAt    *time.Time
-	UpdatedAt    *time.Time
-	Created      *time.Time
-	Updated      *time.Time
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	Created      time.Time
+	Updated      time.Time
 	ParentKey    string
 }
 
@@ -97,11 +97,11 @@ type Sprints struct {
 	Name         string
 	Goal         string
 	State        string
-	StartDate    *time.Time
-	EndDate      *time.Time
-	CompleteDate *time.Time
-	CreatedAt    *time.Time
-	Created      *time.Time
+	StartDate    time.Time
+	EndDate      time.Time
+	CompleteDate time.Time
+	CreatedAt    time.Time
+	Created      time.Time
 }
 
 type Attachments struct {
@@ -111,8 +111,8 @@ type Attachments struct {
 	MimeType         string
 	FileSize         int
 	JiraAttachmentID string
-	CreatedAt        *time.Time
-	Created          *time.Time
+	CreatedAt        time.Time
+	Created          time.Time
 }
 
 type Boards struct {
@@ -121,8 +121,8 @@ type Boards struct {
 	ProjectID   string
 	Name        string
 	Type        string
-	CreatedAt   *time.Time
-	Created     *time.Time
+	CreatedAt   time.Time
+	Created     time.Time
 }
 
 type Comments struct {
@@ -130,8 +130,8 @@ type Comments struct {
 	IssueID   string
 	AuthorID  string
 	Body      string
-	CreatedAt *time.Time
-	Created   *time.Time
+	CreatedAt time.Time
+	Created   time.Time
 }
 
 type IssueLinks struct {
@@ -139,6 +139,6 @@ type IssueLinks struct {
 	IssueID        string
 	LinkedIssueKey string
 	URL            string
-	CreatedAt      *time.Time
+	CreatedAt      time.Time
 	Title          string
 }

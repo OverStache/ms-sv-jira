@@ -53,6 +53,7 @@ func (h *Handler) DownloadCsv(c echo.Context) error {
 		return c.JSON(500, err.Error())
 	}
 	c.Response().Header().Add("Content-Disposition", `attachment; filename="`+filename+`"`)
+	c.Response().Header().Add("Content-Type", "text/csv")
 	c.Response().Header().Add("Access-Control-Expose-Headers", "Content-Disposition")
 	return c.File(filename)
 }
