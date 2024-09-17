@@ -8,7 +8,6 @@ import (
 	"ms-sv-jira/models/db"
 	"ms-sv-jira/module"
 	"os"
-	"reflect"
 	"strconv"
 	"time"
 )
@@ -77,7 +76,7 @@ func (usecase *Usecase) GetIssuesByProjectId(id string) (res []db.Task, err erro
 	return res, err
 }
 
-func (u *Usecase) Csv(table string) {
+func (u *Usecase) Csv(table string) error {
 	var (
 		data     []map[string]string
 		header   []string
@@ -87,7 +86,7 @@ func (u *Usecase) Csv(table string) {
 	case "projects":
 		projects, err := u.repo.GetProjects()
 		if err != nil {
-			return
+			return err
 		}
 
 		for _, v := range projects {
@@ -116,7 +115,7 @@ func (u *Usecase) Csv(table string) {
 	case "issues":
 		issues, err := u.repo.GetIssues()
 		if err != nil {
-			return
+			return err
 		}
 
 		for _, v := range issues {
@@ -146,7 +145,7 @@ func (u *Usecase) Csv(table string) {
 	case "users":
 		users, err := u.repo.GetUsers()
 		if err != nil {
-			return
+			return err
 		}
 
 		for _, v := range users {
@@ -169,32 +168,7 @@ func (u *Usecase) Csv(table string) {
 	}
 
 	exportToCSV(data, header, filename)
-}
-
-func extractJSONTags(model interface{}) []string {
-	var headers []string
-	t := reflect.TypeOf(model).Elem()
-
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		jsonTag := field.Tag.Get("json")
-		if jsonTag != "" {
-			headers = append(headers, jsonTag)
-		}
-	}
-	return headers
-}
-
-// Helper function to extract field values dynamically
-func extractFieldValues(record interface{}) []string {
-	var values []string
-	v := reflect.ValueOf(record).Elem()
-
-	for i := 0; i < v.NumField(); i++ {
-		field := v.Field(i)
-		values = append(values, fmt.Sprintf("%v", field.Interface()))
-	}
-	return values
+	return nil
 }
 
 func exportToCSV(records []map[string]string, headers []string, fileName string) {
@@ -231,4 +205,44 @@ func exportToCSV(records []map[string]string, headers []string, fileName string)
 	}
 
 	fmt.Println("Data exported to CSV successfully")
+}
+
+func (u *Usecase) GetProjects() (res []db.Projects, err error) {
+	res, err = u.repo.GetProjects()
+	return
+}
+
+func (u *Usecase) GetIssues() (res []db.Issues, err error) {
+	res, err = u.repo.GetIssues()
+	return
+}
+
+func (u *Usecase) GetUsers() (res []db.Users, err error) {
+	res, err = u.repo.GetUsers()
+	return
+}
+
+func (u *Usecase) GetBoards() (res []db.Boards, err error) {
+	res, err = u.repo.GetBoards()
+	return
+}
+
+func (u *Usecase) GetSprints() (res []db.Sprints, err error) {
+	res, err = u.repo.GetSprints()
+	return
+}
+
+func (u *Usecase) GetAttachments() (res []db.Attachments, err error) {
+	res, err = u.repo.GetAttachments()
+	return
+}
+
+func (u *Usecase) GetComments() (res []db.Comments, err error) {
+	res, err = u.repo.GetComments()
+	return
+}
+
+func (u *Usecase) GetIssueLinks() (res []db.IssueLinks, err error) {
+	res, err = u.repo.GetIssueLinks()
+	return
 }

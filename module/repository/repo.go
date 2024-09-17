@@ -43,3 +43,28 @@ func (repository *Repository) GetUsers() (res []db.Users, err error) {
 	err = repository.Conn.Find(&res).Error
 	return
 }
+
+func (repository *Repository) GetAttachments() (res []db.Attachments, err error) {
+	err = repository.Conn.Find(&res).Error
+	return
+}
+
+func (repository *Repository) GetComments() (res []db.Comments, err error) {
+	err = repository.Conn.Find(&res).Error
+	return
+}
+
+func (repository *Repository) GetBoards() (res []db.Boards, err error) {
+	err = repository.Conn.Find(&res).Error
+	return
+}
+
+func (repository *Repository) GetSprints() (res []db.Sprints, err error) {
+	err = repository.Conn.Find(&res).Error
+	return
+}
+
+func (repository *Repository) GetIssueLinks() (res []db.IssueLinks, err error) {
+	err = repository.Conn.Find(&res).Error
+	return
+}
