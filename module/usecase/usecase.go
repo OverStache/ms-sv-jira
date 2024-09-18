@@ -250,7 +250,7 @@ func (u *Usecase) Csv(table string) error {
 			"created_at",
 			"title",
 		}
-		filename = "issue-links.csv"
+		filename = "links.csv"
 	case "attachments":
 		datas, err := u.repo.GetAttachments()
 		if err != nil {
