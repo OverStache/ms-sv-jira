@@ -10,7 +10,6 @@ import (
 	"ms-sv-jira/module/usecase"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -23,7 +22,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	originAllowed := os.Getenv("ORIGIN_ALLOWED")
 	dbConn := dbconn.DB()
 	l := logger.L
 	appPort := os.Getenv("PORT")
@@ -32,9 +30,10 @@ func main() {
 	e := echo.New()
 	middL := middleware.InitMiddleware()
 	e.Use(middL.Log)
+	// e.Use(middL.Custom)
 	e.Use(_echoMiddleware.CORSWithConfig(_echoMiddleware.CORSConfig{
-		AllowOrigins: strings.Split(originAllowed, ","),
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderContentDisposition},
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderContentDisposition, echo.HeaderAccessControlRequestHeaders, "ngrok-skip-browser-warning"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 	}))
 

@@ -32,7 +32,7 @@ func NewHandler(e *echo.Echo, middl *middleware.GoMiddleware, usecase module.Use
 	e.GET("/sprints", handler.GetSprints)
 	e.GET("/attachments", handler.GetAttachments)
 	e.GET("/comments", handler.GetComments)
-	e.GET("/issue-links", handler.GetIssueLinks)
+	e.GET("/links", handler.GetIssueLinks)
 }
 
 func (h *Handler) GetIssuesByProjectId(c echo.Context) error {

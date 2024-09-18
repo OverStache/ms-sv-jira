@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"encoding/csv"
+	"errors"
 	"fmt"
 	"log"
 	"ms-sv-jira/helper/logger"
@@ -162,13 +163,166 @@ func (u *Usecase) Csv(table string) error {
 				"created":      v.Created.Format("2006-01-02"),
 			})
 		}
+	case "boards":
+		users, err := u.repo.GetBoards()
+		if err != nil {
+			return err
+		}
 
-		header = []string{"user_id", "jira_user_id", "display_name", "email", "active", "created"}
-		filename = "users.csv"
+		for _, v := range users {
+			data = append(data, map[string]string{
+				"board_id":      strconv.Itoa(v.BoardID),
+				"jira_board_id": v.JiraBoardID,
+				"project_id":    v.ProjectID,
+				"name":          v.Name,
+				"type":          v.Type,
+				"created_at":    v.CreatedAt.Format("2006-01-02"),
+				"created":       v.Created.Format("2006-01-02"),
+			})
+		}
+
+		header = []string{"board_id",
+			"jira_board_id",
+			"project_id",
+			"name",
+			"type",
+			"created_at",
+			"created"}
+		filename = "boards.csv"
+	case "sprints":
+		datas, err := u.repo.GetSprints()
+		if err != nil {
+			return err
+		}
+
+		for _, v := range datas {
+			data = append(data, map[string]string{
+				"sprint_id":      fmt.Sprintf("%d", v.SprintID),
+				"jira_sprint_id": v.JiraSprintID,
+				"board_id":       fmt.Sprintf("%d", v.BoardID),
+				"name":           v.Name,
+				"goal":           v.Goal,
+				"state":          v.State,
+				"start_date":     formatDate(v.StartDate),
+				"end_date":       formatDate(v.EndDate),
+				"complete_date":  formatDate(v.CompleteDate),
+				"created_at":     formatDate(v.CreatedAt),
+				"created":        formatDate(v.Created),
+			})
+		}
+
+		header = []string{
+			"sprint_id",
+			"jira_sprint_id",
+			"board_id",
+			"name",
+			"goal",
+			"state",
+			"start_date",
+			"end_date",
+			"complete_date",
+			"created_at",
+			"created",
+		}
+		filename = "sprints.csv"
+	case "links":
+		datas, err := u.repo.GetIssueLinks()
+		if err != nil {
+			return err
+		}
+
+		for _, v := range datas {
+			data = append(data, map[string]string{
+				"link_id":          fmt.Sprintf("%d", v.LinkID),
+				"issue_id":         v.IssueID,
+				"linked_issue_key": v.LinkedIssueKey,
+				"url":              v.URL,
+				"created_at":       formatDate(v.CreatedAt),
+				"title":            v.Title,
+			})
+		}
+
+		header = []string{
+			"link_id",
+			"issue_id",
+			"linked_issue_key",
+			"url",
+			"created_at",
+			"title",
+		}
+		filename = "issue-links.csv"
+	case "attachments":
+		datas, err := u.repo.GetAttachments()
+		if err != nil {
+			return err
+		}
+
+		for _, v := range datas {
+			data = append(data, map[string]string{
+				"attachment_id":      fmt.Sprintf("%d", v.AttachmentID),
+				"issue_id":           v.IssueID,
+				"file_name":          v.FileName,
+				"mime_type":          v.MimeType,
+				"file_size":          fmt.Sprintf("%d", v.FileSize),
+				"jira_attachment_id": v.JiraAttachmentID,
+				"created_at":         formatDate(v.CreatedAt),
+				"created":            formatDate(v.Created),
+			})
+		}
+
+		header = []string{
+			"attachment_id",
+			"issue_id",
+			"file_name",
+			"mime_type",
+			"file_size",
+			"jira_attachment_id",
+			"created_at",
+			"created",
+		}
+
+		filename = "attachments.csv"
+	case "comments":
+		datas, err := u.repo.GetComments()
+		if err != nil {
+			return err
+		}
+
+		for _, v := range datas {
+			data = append(data, map[string]string{
+				"comment_id": fmt.Sprintf("%d", v.CommentID),
+				"issue_id":   v.IssueID,
+				"author_id":  v.AuthorID,
+				"body":       v.Body,
+				"created_at": formatDate(v.CreatedAt),
+				"created":    formatDate(v.Created),
+			})
+		}
+
+		header = []string{
+			"comment_id",
+			"issue_id",
+			"author_id",
+			"body",
+			"created_at",
+			"created",
+		}
+
+		filename = "comments.csv"
+
+	default:
+		return errors.New("not found")
 	}
 
 	exportToCSV(data, header, filename)
 	return nil
+}
+
+func formatDate(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
+	return t.Format("2006-01-02")
 }
 
 func exportToCSV(records []map[string]string, headers []string, fileName string) {
